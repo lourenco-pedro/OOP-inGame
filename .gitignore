@@ -1,0 +1,7 @@
+Library/Artifacts/*
+Library/PackageCache/*
+Library/ShaderCache/*
+Temp/*
+Library/StateCache/*
+Library/ArtifactDB
+Library/ArtifactDB-lock
