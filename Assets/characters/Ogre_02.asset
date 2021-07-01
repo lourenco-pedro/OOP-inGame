@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee1dfdd9c2d77e4b99e29301e6079ec, type: 3}
   m_Name: Ogre_02
   m_EditorClassIdentifier: 
-  Graphics: {fileID: 0}
-  Life: 0
-  Strength: 0
-  WalkSpeed: 0
+  Graphics: {fileID: 8757911330059106380, guid: d71e57c21ccdd094d9033c68200f0f4f, type: 3}
+  Name: Ogre 02
+  Life: 8
+  Strength: 8
+  WalkSpeed: 4
