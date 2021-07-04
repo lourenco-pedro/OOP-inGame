@@ -17,10 +17,11 @@ public class CharacterGraphics : MonoBehaviour
         }
     }
 
-#if UNITY_EDITOR
-    private void OnValidate()
+    public void SetColorMultiplier(Color color) 
     {
-        _animator = GetComponent<Animator>();
+        foreach (SpriteRenderer render in GetComponentsInChildren<SpriteRenderer>()) 
+        {
+            render.color = color;
+        }
     }
-#endif
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   Graphics: {fileID: 1872607763294064535, guid: 7c23600df3afacc45a70aca48c01c25a, type: 3}
-  Name: Player
+  Name: Dimenor
   Life: 10
   Strength: 3
-  WalkSpeed: 2
+  WalkSpeed: 5

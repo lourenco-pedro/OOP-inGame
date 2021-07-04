@@ -2,16 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Character
 {
-    
-    void Start()
+    public static Player main;
+
+    protected override void Start()
     {
-        
+        base.Start();
+
+        if (main == null) 
+        {
+            main = this;
+        }
     }
 
-    void Update()
+    protected override void Update()
     {
-        
+        base.Update();
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            Walk(Vector2.right);
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            Walk(-Vector2.right);
+        }
+        else 
+        {
+            Stop();
+        }
     }
 }
