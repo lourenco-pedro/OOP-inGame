@@ -15,6 +15,11 @@ public class CharacterGraphics : MonoBehaviour
             Character.CharacterState paramName = (Character.CharacterState)i;
             _animator.SetBool(paramName.ToString(), paramName == state);
         }
+
+        if (state == Character.CharacterState.BackAndForth) 
+        {
+            _animator.SetBool("Walk", true);
+        }
     }
 
     public void SetColorMultiplier(Color color) 

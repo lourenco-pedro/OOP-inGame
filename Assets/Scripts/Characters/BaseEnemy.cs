@@ -9,13 +9,10 @@ public class BaseEnemy : Character
     [SerializeField]
     protected EnemyState _currentState;
 
+    public bool ActAsAEnemy;
+
     protected override void Update()
     {
         base.Update();
-
-        if (Input.GetKeyDown(KeyCode.Space)) 
-        {
-            _currentState = EnemyState.Chase;
-        }
     }
 }

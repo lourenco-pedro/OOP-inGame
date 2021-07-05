@@ -5,9 +5,16 @@ using UnityEngine;
 public class CommandTable : MonoBehaviour
 {
 
+    public static CommandTable main;
+
     public CharacterTemplate PlayerTemplate;
     public CharacterTemplate Enemy1Template;
     public CharacterTemplate Enemy2Template;
+
+    private void Awake()
+    {
+        main = this;
+    }
 
     private void Update()
     {
@@ -24,15 +31,17 @@ public class CommandTable : MonoBehaviour
 
             if (Input.GetKey(KeyCode.Alpha0))
             {
-                Character.Spawn(PlayerTemplate, spawnPos);
+                Character.Spawn<Player>(PlayerTemplate, spawnPos);
             }
             else if (Input.GetKey(KeyCode.Alpha1))
             {
-                Character.Spawn(Enemy1Template, spawnPos);
+                Enemy1 _spawnedEnemy = Character.Spawn<Enemy1>(Enemy1Template, spawnPos);
+                _spawnedEnemy.ActAsAEnemy = true;
             }
             else if (Input.GetKey(KeyCode.Alpha2))
             {
-                Character.Spawn(Enemy2Template, spawnPos);
+                Enemy2 _spawnedEnemy = Character.Spawn<Enemy2>(Enemy2Template, spawnPos);
+                _spawnedEnemy.ActAsAEnemy = true;
             }
         }
         else if (Input.GetKeyDown(KeyCode.C)) 

@@ -37,7 +37,7 @@ public class Player : Character
         {
             Walk(-Vector2.right);
         }
-        else 
+        else if(State != CharacterState.BackAndForth && State != CharacterState.Attack)
         {
             Stop();
         }

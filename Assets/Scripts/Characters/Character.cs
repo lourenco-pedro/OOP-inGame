@@ -6,8 +6,11 @@ using System.Collections.Generic;
 public class Character : MonoBehaviour
 {
     public static List<Character> AllCharacters = new List<Character>();
+    public static Player SpawnedPlayer;
+    public static Enemy1 SpawnedEnemy1;
+    public static Enemy2 SpawnedEnemy2;
 
-    public enum CharacterState { Idle, Walk, Attack, Hurt, Chase }
+    public enum CharacterState { Idle, Walk, Attack, Hurt, Chase, BackAndForth }
 
     public bool Disabled;
     
@@ -38,16 +41,26 @@ public class Character : MonoBehaviour
     private CharacterState _state;
     private CharacterGraphics _graphics;
 
+    private Vector2 _initialPos;
+    private float _backAndForth_walkDuration = 1;
+    private float _backAndForth_currentWalkDuration = 0;
+    private bool _backAndForth_walkRight;
+
     protected virtual void Awake() 
     {
     }
 
     protected virtual void Start()
     {
+        _initialPos = transform.position;
     }
 
     protected virtual void Update() 
     {
+        if (_state == CharacterState.BackAndForth) 
+        {
+            UpdateBackAndForth();
+        }
     }
 
     protected virtual void Initialize()
@@ -97,7 +110,8 @@ public class Character : MonoBehaviour
             _graphics.transform.localScale = Vector2.one;
         }
 
-        State = CharacterState.Walk;
+        if(_state != CharacterState.BackAndForth)
+            State = CharacterState.Walk;
     }
 
     protected virtual void Stop() 
@@ -116,6 +130,12 @@ public class Character : MonoBehaviour
         }
         StartCoroutine(EndHurt());
     }
+    public virtual void AddDamage() 
+    {
+        Graphics.SetColorMultiplier(Color.white);
+        StopCoroutine(IEDamage());
+        StartCoroutine(IEDamage());
+    }
 
     protected void SetSpritesIndex(int offset)
     {
@@ -132,13 +152,6 @@ public class Character : MonoBehaviour
         State = CharacterState.Idle;
     }
 
-    public virtual void AddDamage() 
-    {
-        Graphics.SetColorMultiplier(Color.white);
-        StopCoroutine(IEDamage());
-        StartCoroutine(IEDamage());
-    }
-
     private IEnumerator IEDamage() 
     {
         Graphics.SetColorMultiplier(Color.red);
@@ -146,7 +159,30 @@ public class Character : MonoBehaviour
         Graphics.SetColorMultiplier(Color.white);
     }
 
-    public static void Spawn(CharacterTemplate character, Vector2 position) 
+    private void UpdateBackAndForth() 
+    {
+        if (_backAndForth_currentWalkDuration < _backAndForth_walkDuration)
+        {
+            _backAndForth_currentWalkDuration += 1 * Time.deltaTime;
+
+            if (_backAndForth_walkRight)
+            {
+                Walk(Vector2.right);
+            }
+            else
+            {
+                Walk(Vector2.right * -1);
+            }
+        }
+        else 
+        {
+            _backAndForth_walkRight = !_backAndForth_walkRight;
+            _backAndForth_currentWalkDuration = 0;
+        }
+    }
+
+    public static T Spawn<T>(CharacterTemplate character, Vector2 position)
+        where T : Character
     {
         Player playerTemplate = GameObject.Find("Character_PlayerTemplate").GetComponent<Player>();
         Enemy1 enemy1Template = GameObject.Find("Character_Enemy1Template").GetComponent<Enemy1>();
@@ -159,7 +195,7 @@ public class Character : MonoBehaviour
             spawned1.Initialize();
             spawned1.Base = character;
             AllCharacters.Add(spawned1);
-            return;
+            return spawned1 as T;
         }
         else if (character == enemy2Template.Base) 
         {
@@ -168,7 +204,7 @@ public class Character : MonoBehaviour
             spawned2.Disabled = false;
             spawned2.Initialize();
             AllCharacters.Add(spawned2);
-            return;
+            return spawned2 as T;
         }
 
         Character spawned = Instantiate(playerTemplate, position, Quaternion.identity);
@@ -176,6 +212,7 @@ public class Character : MonoBehaviour
         spawned.Disabled = false;
         spawned.Initialize();
         AllCharacters.Add(spawned);
+        return spawned as T;
     }
 
     public static void ClearAll() 
@@ -186,5 +223,78 @@ public class Character : MonoBehaviour
         }
 
         AllCharacters.Clear();
+
+        SpawnedPlayer = null;
+        SpawnedEnemy1 = null;
+        SpawnedEnemy2 = null;
+    }
+
+    public static void OnSlideChanged(int slide) 
+    {
+
+        ClearAll();
+        
+        if (slide == 12) 
+        {
+            SpawnedPlayer = Spawn<Player>(CommandTable.main.PlayerTemplate, UI.ToWorldPosition(new Vector2(Screen.width / 2, 0)));
+        }
+        if (slide == 13) 
+        {
+            SpawnedPlayer = Spawn<Player>(CommandTable.main.PlayerTemplate, UI.ToWorldPosition(new Vector2(Screen.width / 2, 0)));
+            SpawnedPlayer.ChangeLife(-1);
+        }
+        if (slide == 14) 
+        {
+            SpawnedPlayer = Spawn<Player>(CommandTable.main.PlayerTemplate, UI.ToWorldPosition(new Vector2(Screen.width / 2, 0)));
+            SpawnedPlayer.State = CharacterState.BackAndForth;
+        }
+        if (slide == 15)
+        {
+            SpawnedPlayer = Spawn<Player>(CommandTable.main.PlayerTemplate, UI.ToWorldPosition(new Vector2(Screen.width / 2, 0)));
+            SpawnedPlayer.State = CharacterState.Attack;
+        }
+        if (slide == 16)
+        {
+            SpawnedPlayer = Spawn<Player>(CommandTable.main.PlayerTemplate, UI.ToWorldPosition(new Vector2(Screen.width / 2, 0)));
+        }
+        if (slide == 17)
+        {
+            SpawnedPlayer = Spawn<Player>(CommandTable.main.PlayerTemplate, UI.ToWorldPosition(new Vector2(Screen.width / 2, 0)));
+            SpawnedEnemy1 = Spawn<Enemy1>(CommandTable.main.Enemy1Template, UI.ToWorldPosition(new Vector2(Screen.width / 2 - (Screen.width / 4), 0)));
+            SpawnedEnemy2 = Spawn<Enemy2>(CommandTable.main.Enemy2Template, UI.ToWorldPosition(new Vector2(Screen.width / 2 + (Screen.width / 4), 0)));
+        }
+        if (slide == 18)
+        {
+            SpawnedPlayer = Spawn<Player>(CommandTable.main.PlayerTemplate, UI.ToWorldPosition(new Vector2(Screen.width / 2, 0)));
+            SpawnedEnemy1 = Spawn<Enemy1>(CommandTable.main.Enemy1Template, UI.ToWorldPosition(new Vector2(Screen.width / 2 - (Screen.width / 4), 0)));
+            SpawnedEnemy2 = Spawn<Enemy2>(CommandTable.main.Enemy2Template, UI.ToWorldPosition(new Vector2(Screen.width / 2 + (Screen.width / 4), 0)));
+
+            SpawnedEnemy1.ChangeLife(-1);
+            SpawnedEnemy2.ChangeLife(-1);
+        }
+        if (slide == 19)
+        {
+            SpawnedPlayer = Spawn<Player>(CommandTable.main.PlayerTemplate, UI.ToWorldPosition(new Vector2(Screen.width / 2, 0)));
+            SpawnedEnemy1 = Spawn<Enemy1>(CommandTable.main.Enemy1Template, UI.ToWorldPosition(new Vector2(Screen.width / 2 - (Screen.width / 4), 0)));
+            SpawnedEnemy2 = Spawn<Enemy2>(CommandTable.main.Enemy2Template, UI.ToWorldPosition(new Vector2(Screen.width / 2 + (Screen.width / 4), 0)));
+
+            SpawnedEnemy1.State = CharacterState.BackAndForth;
+            SpawnedEnemy2.State = CharacterState.BackAndForth;
+        }
+        if (slide == 20)
+        {
+            SpawnedPlayer = Spawn<Player>(CommandTable.main.PlayerTemplate, UI.ToWorldPosition(new Vector2(Screen.width / 2, 0)));
+            SpawnedEnemy1 = Spawn<Enemy1>(CommandTable.main.Enemy1Template, UI.ToWorldPosition(new Vector2(Screen.width / 2 - (Screen.width / 4), 0)));
+            SpawnedEnemy2 = Spawn<Enemy2>(CommandTable.main.Enemy2Template, UI.ToWorldPosition(new Vector2(Screen.width / 2 + (Screen.width / 4), 0)));
+
+            SpawnedEnemy1.State = CharacterState.Attack;
+            SpawnedEnemy2.State = CharacterState.Attack;
+        }
+        if (slide == 21)
+        {
+            SpawnedPlayer = Spawn<Player>(CommandTable.main.PlayerTemplate, UI.ToWorldPosition(new Vector2(Screen.width / 2, 0)));
+            SpawnedEnemy1 = Spawn<Enemy1>(CommandTable.main.Enemy1Template, UI.ToWorldPosition(new Vector2(Screen.width / 2 - (Screen.width / 4), 0)));
+            SpawnedEnemy2 = Spawn<Enemy2>(CommandTable.main.Enemy2Template, UI.ToWorldPosition(new Vector2(Screen.width / 2 + (Screen.width / 4), 0)));
+        }
     }
 }

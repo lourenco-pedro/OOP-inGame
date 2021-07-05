@@ -26,14 +26,24 @@ public class Enemy2 : BaseEnemy
 
     protected override void Walk(Vector2 direction)
     {
-        transform.position = Vector2.MoveTowards(transform.position, direction, WalkSpeed * Time.deltaTime);
-        Face();
+        if (State != CharacterState.BackAndForth)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, direction, WalkSpeed * Time.deltaTime);
+            Face();
 
-        State = CharacterState.Walk;
+            State = CharacterState.Walk;
+        }
+        else
+        {
+            base.Walk(direction);
+        }
     }
 
     private void UppdateState()
     {
+        if (!ActAsAEnemy)
+            return;
+
         Vector2 dir = Vector2.right * (Player.main.Graphics.transform.localScale.x < 0 ? -1 : 1);
         Vector2 destination = (Vector2)Player.main.transform.position + dir * 2f;
 
