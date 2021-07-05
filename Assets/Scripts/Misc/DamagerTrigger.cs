@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class DamagerTrigger : MonoBehaviour
 {
+
+    public bool CanDamage;
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Character character = other.GetComponent<Character>();
-        if (character == null) 
+        Player character = other.GetComponent<Player>();
+        if (!CanDamage || character == null) 
         {
             return;
         }

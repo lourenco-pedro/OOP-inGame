@@ -2,23 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy1 : Character
+public class Enemy1 : BaseEnemy
 {
 
-    private enum EnemyState { Chase, Attack }
-    [SerializeField]
-    private EnemyState _currentState;
+    private DamagerTrigger _damager;
 
     protected override void Start()
     {
+        _damager = GetComponentInChildren<DamagerTrigger>();
         base.Start();
-        _currentState = EnemyState.Chase;
         SetSpritesIndex(20);
     }
 
     protected override void Update()
     {
         base.Update();
+
+        if (Base == null || Player.main == null || Player.main.Graphics == null || Disabled)
+            return;
+
         UppdateState();
     }
 
@@ -42,6 +44,9 @@ public class Enemy1 : Character
                     State = CharacterState.Attack;
                     Face();
 
+                    if(_damager != null)
+                        _damager.CanDamage = true;
+
                     if (Vector2.Distance(destination, transform.position) > 2f)
                     {
                         _currentState = EnemyState.Chase;
@@ -51,6 +56,9 @@ public class Enemy1 : Character
             case EnemyState.Chase:
                 {   
                     Walk(destination);
+
+                    if (_damager != null)
+                        _damager.CanDamage = false;
 
                     if (Vector2.Distance(destination, transform.position) < .2f) 
                     {

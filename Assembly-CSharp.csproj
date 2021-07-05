@@ -57,6 +57,9 @@
   <ItemGroup>
     <Compile Include="Assets\Spriter2UnityDX\Runtime\EntityRenderer.cs" />
     <Compile Include="Assets\Spriter2UnityDX\Runtime\SortingOrderUpdater.cs" />
+    <Compile Include="Assets\Scripts\UI\UI.cs" />
+    <Compile Include="Assets\Scripts\Misc\DamagerTrigger.cs" />
+    <Compile Include="Assets\Scripts\UI\DamageLabel.cs" />
     <Compile Include="Assets\Scripts\Characters\Enemy1.cs" />
     <Compile Include="Assets\Spriter2UnityDX\Runtime\TextureController.cs" />
     <Compile Include="Assets\Scripts\Characters\Enemy2.cs" />
@@ -64,9 +67,8 @@
     <Compile Include="Assets\Scripts\Characters\Character.cs" />
     <Compile Include="Assets\Scripts\Characters\CharacterTemplate.cs" />
     <Compile Include="Assets\Scripts\Characters\CharacterGraphics.cs" />
-    <Compile Include="Assets\Scripts\UI\UI.cs" />
-    <Compile Include="Assets\Scripts\UI\DamageLabel.cs" />
-    <Compile Include="Assets\Scripts\Misc\DamagerTrigger.cs" />
+    <Compile Include="Assets\Scripts\Characters\BaseEnemy.cs" />
+    <Compile Include="Assets\Scripts\Misc\CommandTable.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

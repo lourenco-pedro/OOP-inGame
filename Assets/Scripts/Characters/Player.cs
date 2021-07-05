@@ -6,19 +6,28 @@ public class Player : Character
 {
     public static Player main;
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
 
-        if (main == null) 
+        if (main != null)
         {
             main = this;
         }
+        main = this;
+    }
+
+    protected override void Start()
+    {
+        base.Start();
     }
 
     protected override void Update()
     {
         base.Update();
+
+        if (Base == null)
+            return;
 
         if (Input.GetKey(KeyCode.D))
         {
