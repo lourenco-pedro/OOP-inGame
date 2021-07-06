@@ -44,9 +44,13 @@ public class CommandTable : MonoBehaviour
                 _spawnedEnemy.ActAsAEnemy = true;
             }
         }
-        else if (Input.GetKeyDown(KeyCode.C)) 
+        else if (Input.GetKeyDown(KeyCode.C))
         {
             Character.ClearAll();
+        }
+        else if (Input.GetKeyDown(KeyCode.O)) 
+        {
+            Character.Spawn<Player>(PlayerTemplate, UI.ToWorldPosition(new Vector2(Screen.width + Screen.width / 2, 0)));
         }
     }
 }

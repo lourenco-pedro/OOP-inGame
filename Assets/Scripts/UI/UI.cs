@@ -77,6 +77,12 @@ public class UI : MonoBehaviour
         dmgLabel.transform.position = position;
     }
 
+    public void SetSlidePage(int page) 
+    {
+        _currentSlide = page;
+        OnSlideChanged?.Invoke(_currentSlide);
+    }
+
     public static void AddDamageLabel(Vector2 position, string lbl) 
     {
         Instance.AddDamageInternal(position, lbl);

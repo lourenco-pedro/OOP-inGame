@@ -296,5 +296,26 @@ public class Character : MonoBehaviour
             SpawnedEnemy1 = Spawn<Enemy1>(CommandTable.main.Enemy1Template, UI.ToWorldPosition(new Vector2(Screen.width / 2 - (Screen.width / 4), 0)));
             SpawnedEnemy2 = Spawn<Enemy2>(CommandTable.main.Enemy2Template, UI.ToWorldPosition(new Vector2(Screen.width / 2 + (Screen.width / 4), 0)));
         }
+        if (slide == 25)
+        {
+            SpawnedEnemy1 = Spawn<Enemy1>(CommandTable.main.Enemy1Template, UI.ToWorldPosition(new Vector2(Screen.width / 2, 0)));
+        }
+        if (slide == 26)
+        {
+            SpawnedEnemy1 = Spawn<Enemy1>(CommandTable.main.Enemy1Template, UI.ToWorldPosition(new Vector2(Screen.width / 2, 0)));
+            SpawnedEnemy1.ActAsAEnemy = true;
+        }
+        if (slide == 28)
+        {
+            SpawnedPlayer = Spawn<Player>(CommandTable.main.PlayerTemplate, UI.ToWorldPosition(new Vector2(Screen.width / 2, 0)));
+            SpawnedEnemy1 = Spawn<Enemy1>(CommandTable.main.Enemy1Template, UI.ToWorldPosition(new Vector2(Screen.width / 2 - (Screen.width / 4), 0)));
+            //SpawnedEnemy2 = Spawn<Enemy2>(CommandTable.main.Enemy2Template, UI.ToWorldPosition(new Vector2(Screen.width / 2 + (Screen.width / 4), 0)));
+        }
+        if (slide == 29)
+        {
+            SpawnedPlayer = Spawn<Player>(CommandTable.main.PlayerTemplate, UI.ToWorldPosition(new Vector2(Screen.width / 2, 0)));
+            SpawnedEnemy1 = Spawn<Enemy1>(CommandTable.main.Enemy1Template, UI.ToWorldPosition(new Vector2(Screen.width / 2 - (Screen.width / 4), 0)));
+            SpawnedEnemy2 = Spawn<Enemy2>(CommandTable.main.Enemy2Template, UI.ToWorldPosition(new Vector2(Screen.width / 2 + (Screen.width / 4), 0)));
+        }
     }
 }
